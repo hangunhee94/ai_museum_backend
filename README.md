@@ -17,7 +17,7 @@ url
 
 
 ### ⏲️ 개발기간
-2022년 06월 28일 ~ 2021년 07월 05일
+2022년 06월 28일 ~ 2022년 07월 05일
 
 
 ### 🧙 맴버구성
@@ -57,16 +57,16 @@ url
 
 <p align='center'>
   <p>1차 와이어 프레임</p>
-  <img src="./README/images/wireframe_2.png" width="600px" />
+  <img src="./README/images/wireframe.png" width="600px" />
 </p>
 
 
 ### 📌 API 설계
-https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
+주소 : https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
 
 <p align='center'>
   <p>1차 API</p>
-  <img src="./README/images/API_1.png" width="600px" />
+  <img src="./README/images/ERD.png" width="600px" />
 </p>
 
 
