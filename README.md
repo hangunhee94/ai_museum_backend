@@ -71,7 +71,7 @@ url
 
 
 ### 📌 API 설계
-주소 : https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
+주소 : https://www.notion.so/HELPME-8-API-42b8f1b477254e8da951f9cce09da00d  
 
 <p align='center'>
   <p>1차 API</p>
