@@ -61,12 +61,21 @@ url
 </p>
 
 
+### 📌 DB 설계
+주소 : https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
+
+<p align='center'>
+  <p>1차 DB</p>
+  <img src="./README/images/ERD.png" width="600px" />
+</p>
+
+
 ### 📌 API 설계
 주소 : https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
 
 <p align='center'>
   <p>1차 API</p>
-  <img src="./README/images/ERD.png" width="600px" />
+  <img src="./README/images/API.png" width="600px" />
 </p>
 
 
