@@ -51,7 +51,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.username} / {self.email} / {self.fullname}"
+        return f"{self.username} / {self.email} "
 
     # 아~ 이런게 있구나 생각하기
 
