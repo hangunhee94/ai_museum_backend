@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-# Create your models here.
-
 # custom user model 사용 시 UserManager 클래스와 create_user, create_superuser 함수가 정의되어 있어야 함
 
 
@@ -65,8 +63,3 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
-
-# user - user detail : 1:1
-# 한 유저가 두 프로필을 가질 수는 없음
-
-# 쿼리를 날려서 crud를 한다

@@ -1,3 +1,4 @@
+from turtle import title
 from django.db import models
 from datetime import datetime
 
@@ -9,11 +10,13 @@ class Article(models.Model):
         'user.User', verbose_name="작성자", on_delete=models.CASCADE)
     result_img = models.ImageField()
     content = models.TextField(verbose_name="게시글 작성")
-    likes = models.ManyToManyField('user.User', related_name='article_like')
+    likes = models.ManyToManyField(
+        'user.User', related_name='article_like', default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     exposure_start = models.DateField('노출 시작 일자', default=datetime.now)
     exposure_end = models.DateField('노출 종료 일자', default=datetime.now)
+    title = models.CharField('title', max_length=100, default="")
 
     def __str__(self):
         return f"Article : {self.pk}"
