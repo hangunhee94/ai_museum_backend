@@ -3,5 +3,5 @@ from django.urls import path, include
 from article import views
 
 urlpatterns = [
-    path('article/', views.ArticleView.as_view()),
+    path('', views.ArticleView.as_view()),
 ]

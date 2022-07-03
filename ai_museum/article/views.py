@@ -9,8 +9,8 @@ from django.utils import timezone
 # Create your views here.
 class ArticleView(APIView):
     # 로그인 한 사용자의 게시글 목록 return
-    permission_classes =[permissions.AllowAny]
-    # permission_classes = [permissions.IsAuthenticated]
+    # permission_classes =[permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     # permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
 
     def get(self, request):
@@ -28,22 +28,23 @@ class ArticleView(APIView):
     
     def post(self, request):
         user = request.user
-        title = request.data.get("content","")
-        # exposure_start_date =request.date.get("exposure_start_date")
-        # exposure_end_date =request.date.get("exposure_end_date")
+        content = request.data.get("content","")
+        result_img = request.data.get("result_img","")
+        # exposure_start_date =request.data.get("exposure_start_date")
+        # exposure_end_date =request.data.get("exposure_end_date")
         
 
-        if len(title) <= 5:
+        if len(content) <= 5:
             return Response({"error": "내용은 5자 이상 작성해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         article = ArticleModel(
             user=user,
             **request.data
             # title=title,
+            # result_img=result_img,
             # contents=contents,
             # exposure_start_date=exposure_start_date,
             # exposure_end_date=exposure_end_date,
             )
-
         article.save()
         return Response({"message": "성공"}, status=status.HTTP_200_OK)
