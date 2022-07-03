@@ -61,12 +61,21 @@ url
 </p>
 
 
-### 📌 API 설계
+### 📌 DB 설계
 주소 : https://www.erdcloud.com/d/PTtFcJc9CGDeeKjkf  
 
 <p align='center'>
-  <p>1차 API</p>
+  <p>1차 DB</p>
   <img src="./README/images/ERD.png" width="600px" />
+</p>
+
+
+### 📌 API 설계
+주소 : https://www.notion.so/HELPME-8-API-42b8f1b477254e8da951f9cce09da00d  
+
+<p align='center'>
+  <p>1차 API</p>
+  <img src="./README/images/API.png" width="600px" />
 </p>
 
 
