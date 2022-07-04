@@ -6,7 +6,6 @@ from datetime import datetime  # 시간 출력을 위한 import
 content 이미지를 정의된 모델의 스타일 입혀주는 방법!!
 이미지의 경로를 바꾸거나 모델을 선택할 수 있도록 사용자에게 선택할 수 있도록 만드는 방법을 모색해볼 것
 '''
-
 # def style_transfer(number):
 def style_transfer():
     # 커피머신 준비하기
