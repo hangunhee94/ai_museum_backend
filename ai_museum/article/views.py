@@ -29,8 +29,9 @@ class ArticleView(APIView):
     # permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
 
     def get(self, request):
-        user = request.user
-        today =timezone.now()
+        articles = ArticleModel.objects.all()
+        today = timezone.now()
+        serializer = ArticleSerializer(articles, many=True).data
 
         # articles = ArticleModel.objects.filter(
         #     exposure_start_date__lte = today,
@@ -39,16 +40,16 @@ class ArticleView(APIView):
 
         articles = ArticleModel.objects.all()
 
-        serializer = ArticleSerializer(articles, many=True).data
-
         return Response(serializer, status=status.HTTP_200_OK)
     
     def post(self, request):
-        user = request.user
+        user = request.user.id
         content = request.data.get("content","")
-        result_img = request.data.get("result_img","")
-        # exposure_start_date =request.data.get("exposure_start_date")
-        # exposure_end_date =request.data.get("exposure_end_date")
+        image = request.data.get("image")
+
+        # # result_img = request.data.get("result_img")
+        # # exposure_start_date =request.data.get("exposure_start_date")
+        # # exposure_end_date =request.data.get("exposure_end_date")
         
 
         # if len(content) <= 5:
@@ -83,6 +84,7 @@ class ArticleView(APIView):
 #         articles = ArticleSerializer(articles, many=True).data
 
 #         return Response(articles, status=status.HTTP_200_OK)
+    
     
 #     def post(self, request):
 #         content = request.data.get("content", "")
