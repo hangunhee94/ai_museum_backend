@@ -1,6 +1,12 @@
   # Created by https://www.toptal.com/developers/gitignore/api/django,windows,visualstudiocode,pycharm
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,windows,visualstudiocode,pycharm
 
+### Custom ###
+secrets.json
+style_transfer/models/
+style_transfer/output/
+static/images/
+
 ### Django ###
 venv
 *.log
