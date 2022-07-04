@@ -10,12 +10,12 @@ from article.models import Article as ArticleModel
 #     def get_user(self, obj):
 #         return obj.user.username
     
-#     class Meta:
-#         model = CommentModel
-#         fields = ["user", "contents"]
+    class Meta:
+        model = CommentModel
+        fields = "__all__"
 
 class ArticleSerializer(serializers.ModelSerializer):
-    # comments = CommentSerializer(many=True, source="comments_set")
+    # comments = CommentSerializer(many=True, source="comment_set")
     
     def validate(self, data):
         return data
@@ -32,7 +32,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
 
-
     class Meta:
         model = ArticleModel
-        fields = ['user', 'content', 'image']
+        # fields = ["content", "image"]
+        fields = "__all__"

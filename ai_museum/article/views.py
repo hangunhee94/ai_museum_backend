@@ -1,3 +1,4 @@
+from http.client import ResponseNotReady
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions, status
@@ -32,10 +33,12 @@ class ArticleView(APIView):
         today = timezone.now()
         serializer = ArticleSerializer(articles, many=True).data
 
-        articles = ArticleModel.objects.filter(
-            exposure_start_date__lte = today,
-            exposure_end_date__gte = today,    
-        ).order_by("-id")
+        # articles = ArticleModel.objects.filter(
+        #     exposure_start_date__lte = today,
+        #     exposure_end_date__gte = today,    
+        # ).order_by("-id")
+
+        articles = ArticleModel.objects.all()
 
         return Response(serializer, status=status.HTTP_200_OK)
     
@@ -55,31 +58,23 @@ class ArticleView(APIView):
         # article = ArticleModel(
         #     user=user,
         #     **request.data
-        #     # title=title,
-        #     # result_img=result_img,
-        #     # contents=contents,
-        #     # exposure_start_date=exposure_start_date,
-        #     # exposure_end_date=exposure_end_date,
+        #     title=title,
+        #     result_img=result_img,
+        #     contents=contents,
+        #     exposure_start_date=exposure_start_date,
+        #     exposure_end_date=exposure_end_date,
         #     )
-        article = {
-            'user' : user,
-            'content' : content,
-            'image' : image
-
-            # result_img=result_img,
-            # contents=contents,
-            # exposure_start_date=exposure_start_date,
-            # exposure_end_date=exposure_end_date,
-            }
-
-        article_serializer = ArticleSerializer(data=article)
-        if article_serializer.is_valid():
-            article_serializer.save()
-            return Response({"message": "글 작성 완료!!"}, status=status.HTTP_200_OK)
+        # article.save()
+        # return Response({"message": "성공"}, status=status.HTTP_200_OK)
+        
+        request.data['user'] = request.user.id
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message":"글 작성 완료"})
         else:
-            # os.remove(latest_file)
-            return Response({"message": f'${article_serializer.errors}'},status=status.HTTP_400_BAD_REQUEST)
-
+            print(serializer.errors)
+            return Response({"message":f'${serializer.errors}'}, 400)
 
 # class ArticleView(APIView):
 
@@ -89,6 +84,7 @@ class ArticleView(APIView):
 #         articles = ArticleSerializer(articles, many=True).data
 
 #         return Response(articles, status=status.HTTP_200_OK)
+    
     
 #     def post(self, request):
 #         content = request.data.get("content", "")
@@ -121,7 +117,7 @@ class ArticleView(APIView):
 
 
 #         user = request.user.id
-#         article = {'user': user, 'content': content, 'result_img': {url? or file?}}
+#         article = {'user': user, 'content': content, 'result_img': {file}}
 #         # article = {'user': user, 'title': title, 'img_url': latest_file}
 #         article_serializer = ArticleSerializer(data=article)
 #         if article_serializer.is_valid():
@@ -133,34 +129,34 @@ class ArticleView(APIView):
 #             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-'''
-수정 및 삭제 로직 : 출처 내배캠 2기 5조
+# '''
+# 수정 및 삭제 로직 : 출처 내배캠 2기 5조
 
-    def put(self, request, article_id):
-        try:
-            article = Article.objects.get(id=article_id)
-        except Article.DoesNotExist:
-            return Response({"error": "존재하지 않는 게시물입니다."},
-                            status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request, article_id):
+#         try:
+#             article = Article.objects.get(id=article_id)
+#         except Article.DoesNotExist:
+#             return Response({"error": "존재하지 않는 게시물입니다."},
+#                             status=status.HTTP_400_BAD_REQUEST)
 
-        # article_serializer = ArticleSerializer(article, data=request.data, partial=True)
-        # article_serializer.is_valid(raise_exception=True)
-        # article_serializer.save()
+#         # article_serializer = ArticleSerializer(article, data=request.data, partial=True)
+#         # article_serializer.is_valid(raise_exception=True)
+#         # article_serializer.save()
 
-        return Response({"message": "put method"}, status=status.HTTP_200_OK)
+#         return Response({"message": "put method"}, status=status.HTTP_200_OK)
 
-    def delete(self, request, article_id):
-        user = request.user.id
-        article = Article.objects.filter(id=article_id)
-        print(user)
-        print(article[0].user_id)
-        if user == article[0].user_id:
-            article.delete()
-            os.remove(article[0].img_url)
-            return Response({"message": "게시물이 삭제되었습니다."}, status=status.HTTP_200_OK)
+#     def delete(self, request, article_id):
+#         user = request.user.id
+#         article = Article.objects.filter(id=article_id)
+#         print(user)
+#         print(article[0].user_id)
+#         if user == article[0].user_id:
+#             article.delete()
+#             os.remove(article[0].img_url)
+#             return Response({"message": "게시물이 삭제되었습니다."}, status=status.HTTP_200_OK)
 
-        return Response({"message": "실패."}, status=status.HTTP_400_BAD_REQUEST)
-'''
+#         return Response({"message": "실패."}, status=status.HTTP_400_BAD_REQUEST)
+# '''
 
 
 
