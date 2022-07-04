@@ -6,7 +6,8 @@ from django.utils import timezone
 
 class Article(models.Model):
     user = models.ForeignKey('user.User', verbose_name="작성자", on_delete=models.CASCADE)
-    result_img = models.FileField()
+    # result_img = models.FileField()
+    image = models.ImageField()
     content = models.TextField(verbose_name="게시글 작성")
     likes = models.ManyToManyField('user.User', related_name='article_like')
     created_at = models.DateTimeField(auto_now_add=True)

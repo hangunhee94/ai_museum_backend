@@ -1,22 +1,38 @@
 from rest_framework import serializers
 
 from article.models import Article as ArticleModel
-from article.models import Comment as CommentModel
+# from article.models import Comment as CommentModel
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
+# class CommentSerializer(serializers.ModelSerializer):
+#     user = serializers.SerializerMethodField()
     
-    def get_user(self, obj):
-        return obj.user.username
+#     def get_user(self, obj):
+#         return obj.user.username
     
-    class Meta:
-        model = CommentModel
-        fields = ["user", "contents"]
+#     class Meta:
+#         model = CommentModel
+#         fields = ["user", "contents"]
 
 class ArticleSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, source="comments_set")
+    # comments = CommentSerializer(many=True, source="comments_set")
     
+    def validate(self, data):
+        return data
+
+    def create(self, validated_data):
+        article = ArticleModel(**validated_data)
+        article.save()
+        return article
+
+    # def update(self, instance, validated_data):
+    #     print(validated_data)
+    #     instance.content = validated_data['content']
+    #     print(instance.content)
+    #     instance.save()
+    #     return instance
+
+
     class Meta:
         model = ArticleModel
-        fields = ["content", "comments"]
+        fields = ['user', 'content', 'image']
