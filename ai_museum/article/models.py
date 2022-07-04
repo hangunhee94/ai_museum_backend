@@ -6,9 +6,9 @@ from django.utils import timezone
 
 class Article(models.Model):
     user = models.ForeignKey('user.User', verbose_name="작성자", on_delete=models.CASCADE)
-    result_img = models.FileField()
+    result_img = models.ImageField(blank=True)
     content = models.TextField(verbose_name="게시글 작성")
-    likes = models.ManyToManyField('user.User', related_name='article_like')
+    likes = models.ManyToManyField('user.User', related_name='article_like', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     exposure_start = models.DateField('노출 시작 일자', default=timezone.now)
@@ -20,7 +20,7 @@ class Article(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey('user.User', verbose_name="작성자", on_delete=models.CASCADE)
     article = models.ForeignKey(Article, verbose_name="게시글", on_delete=models.CASCADE)
-    comment = models.TextField(verbose_name="댓글")
+    comment = models.TextField(verbose_name="댓글", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

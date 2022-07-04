@@ -12,11 +12,12 @@ class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CommentModel
-        fields = ["user", "contents"]
+        fields = "__all__"
 
 class ArticleSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, source="comments_set")
+    # comments = CommentSerializer(many=True, source="comment_set")
     
     class Meta:
         model = ArticleModel
-        fields = ["content", "comments"]
+        # fields = ["content", "result_img"]
+        fields = "__all__"
