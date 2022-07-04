@@ -18,3 +18,7 @@ soupsieve==2.3.2.post1
 sqlparse==0.4.2
 tzdata==2022.1
 urllib3==1.26.9
+
+# 모델 구동을 위한 필수 pip
+numpy==1.23.0
+opencv-python==4.6.0.66
