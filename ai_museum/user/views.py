@@ -9,6 +9,10 @@ from ai_museum.permissions import IsAdminOrIsAuthenticatedReadOnly
 
 from user.serializers import UserSerializer, UserSignupSerializer
 
+# 사용자에게 토큰을 할당하기 위한 구성
+from user.jwt_claim_serializer import SpartaTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 class UserView(APIView):
     permission_classes =[permissions.AllowAny]
     # permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
@@ -36,3 +40,7 @@ class UserView(APIView):
     def delete(self, request):
         return Response({"message": "delete method!!"})
 
+
+# 토큰 할당
+class SpartaTokenObtainPairView(TokenObtainPairView):
+    serializer_class = SpartaTokenObtainPairSerializer

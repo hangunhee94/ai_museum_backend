@@ -26,3 +26,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.comment} {self.user.username}님이 작성하신 댓글입니다.'
+
+class ArticleImage(models.Model):
+    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey(Article, on_delete=models.SET_NULL, null=True)
+    image_url = models.UrlField(verbose_name="url", max_length=255)

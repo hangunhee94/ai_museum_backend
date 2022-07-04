@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from article.models import Article as ArticleModel
+from article.models import ArticleImage as ArticleImageModel
 
 from article.serializers import ArticleSerializer
 from django.utils import timezone
@@ -43,36 +44,56 @@ class ArticleView(APIView):
         return Response(serializer, status=status.HTTP_200_OK)
     
     def post(self, request):
-        user = request.user.id
-        content = request.data.get("content","")
-        image = request.data.get("image")
-
-        # # result_img = request.data.get("result_img")
-        # # exposure_start_date =request.data.get("exposure_start_date")
-        # # exposure_end_date =request.data.get("exposure_end_date")
-        
-
+        file = request.data.get("image")
+        number = request.data.get("number", "6")
+        # print(file)
+        # print(number)
         # if len(content) <= 5:
         #     return Response({"error": "내용은 5자 이상 작성해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # article = ArticleModel(
-        #     user=user,
-        #     **request.data
-        #     title=title,
-        #     result_img=result_img,
-        #     contents=contents,
-        #     exposure_start_date=exposure_start_date,
-        #     exposure_end_date=exposure_end_date,
-        #     )
-        # article.save()
-        # return Response({"message": "성공"}, status=status.HTTP_200_OK)
+        # 이미지 업로드를 위한 임시 폴더 생성 : style_transfer/input
+        default_storage.save('./input/input_img.jpg', ContentFile(file.read()))
         
+        # 선택 모델의 목록 1 ~ 9
+        model = ['style_transfer/models/composition_vii.t7',
+                 'style_transfer/models/la_muse.t7',
+                 'style_transfer/models/starry_night.t7',
+                 'style_transfer/models/the_wave.t7',
+                 'style_transfer/models/candy.t7',
+                 'style_transfer/models/feathers.t7',
+                 'style_transfer/models/mosaic.t7',
+                 'style_transfer/models/the_scream.t7',
+                 'style_transfer/models/udnie.t7'
+                 ]
+
+        model_number = model[int(number)]
+        print(model[int(number)])
+
+        style_transfer(model_number)
+
+        shutil.rmtree('./style_transfer/input/')
+
+        list_of_files = glob.glob('./style_transfer/output/*')  # * means all if need specific format then *.csv
+        print(list_of_files)
+        latest_file = max(list_of_files, key=os.path.getctime)
+        print(latest_file)
+
+        # result_img = glob.glob('/*')
+        # file_path = "Desktop/folder/myfile.txt"
+        result_img = os.path.basename(latest_file)
+        print(result_img)
+
         request.data['user'] = request.user.id
+        ArticleImageModel.objects.post('image_url' ,result_img)
+        # request.data['url'] = result_img
+        # print(request.data)
+        # serializer 에 url 필드 추가
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message":"글 작성 완료"})
         else:
+            os.remove(latest_file)
             print(serializer.errors)
             return Response({"message":f'${serializer.errors}'}, 400)
 

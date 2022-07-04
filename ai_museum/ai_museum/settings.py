@@ -114,8 +114,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # 이미지 경로를 지정할 때 추가 구성
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'style_transfer'
+MEDIA_URL = '/style_transfer/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
