@@ -4,16 +4,6 @@ from article.models import Article as ArticleModel
 from article.models import Comment as CommentModel
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    
-    def get_user(self, obj):
-        return obj.user.username
-    
-    class Meta:
-        model = CommentModel
-        fields = "__all__"
-
 class ArticleSerializer(serializers.ModelSerializer):
     # comments = CommentSerializer(many=True, source="comment_set")
     
@@ -36,3 +26,16 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = ArticleModel
         # fields = ["content", "image"]
         fields = "__all__"
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = CommentModel
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = 'likes'
+        model = ArticleModel
+
