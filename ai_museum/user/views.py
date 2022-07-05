@@ -47,3 +47,4 @@ class UserView(APIView):
 #     def delete(self, request):
 #         logout(request)
 #         return Response({"message": "logout success!"})
+

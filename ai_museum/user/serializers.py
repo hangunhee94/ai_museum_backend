@@ -1,4 +1,10 @@
 from rest_framework import serializers
+
+from article.models import Article as ArticleModel
+from article.models import Comment as CommentModel
+
+from user.models import User as UserModel
+from article.serializers import ArticleSerializer
 from user.models import User as UserModel
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -24,3 +30,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = "__all__"
+
