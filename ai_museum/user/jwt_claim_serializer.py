@@ -9,7 +9,7 @@ class SpartaTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # 사용자 지정 클레임 설정하기
-        # token['id'] = user.id  # 빼도 괜찮음
+        token['id'] = user.id  # 빼도 괜찮음
         token['username'] = user.username
 
         return token
