@@ -5,7 +5,7 @@ from article.models import Comment as CommentModel
 
 from user.models import User as UserModel
 
-from article.serializers import ArticleSerializer, CommentSerializer
+from article.serializers import ArticleSerializer
 
 
 
@@ -30,7 +30,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     articles = ArticleSerializer(many=True, source = "article_set")
-    comments = CommentSerializer(many=True, source = "comment_set")
+    # comments = CommentSerializer(many=True, source = "comment_set")
 
     class Meta:
         model = UserModel
