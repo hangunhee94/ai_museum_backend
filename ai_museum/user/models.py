@@ -28,11 +28,9 @@ class UserManager(BaseUserManager):
 # custom user model
 class User(AbstractBaseUser):
     # unique=True 설정으로 중복값을 방지
-    username = models.CharField("사용자 계정", max_length=50, unique=True)
+    username = models.CharField("사용자 계정", max_length=30, unique=True)
     # 패스워드는 암호화되어 저장되기 때문에 max_length를 넉넉하게 설정
     password = models.CharField("사용자 비밀번호", max_length=200)
-    email = models.EmailField("사용자 이메일", max_length=254)
-    join_date = models.DateTimeField("가입일", auto_now_add=True)
     
     # 사용자 계정의 활성화 여부 확인
     is_private = models.BooleanField(default=True)
@@ -51,9 +49,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.username} / {self.email} / {self.fullname}"
-
-    # 아~ 이런게 있구나 생각하기
+        return f"{self.username}"
 
     # 로그인 사용자의 특정 테이블의 crud 권한을 설정, perm table의 crud 권한이 들어간다.
     # admin일 경우 항상 True, 비활성 사용자(is_active=False)의 경우 항상 False
