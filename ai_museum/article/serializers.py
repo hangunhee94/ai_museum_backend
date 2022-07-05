@@ -8,8 +8,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     # comments = CommentSerializer(many=True, source="comment_set")
     
-    # def validate(self, data):
-    #     return data
+    def validate(self, data):
+        return data
 
     # def create(self, validated_data):
     #     article = ArticleModel(**validated_data)

@@ -31,3 +31,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = "__all__"
 
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'username': {
+                'error_messages': {
+                    'required': 'username을 입력해주세요.',
+                    'invalid': '알맞은 형식의 username을 입력해주세요.'
+                    },
+                    'required': False
+                    },
+        }
