@@ -53,10 +53,6 @@ INSTALLED_APPS = [
 
     'user',
     'article',
-
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'corsheaders',
 ]
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

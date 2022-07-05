@@ -3,9 +3,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
+
 from article.models import Article as ArticleModel
+from article.models import Article as CommentModel
 
 from article.serializers import ArticleSerializer
+from article.serializers import CommentSerializer
 from django.utils import timezone
 
 # 딥러닝 관련
