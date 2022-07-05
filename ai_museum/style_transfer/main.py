@@ -30,7 +30,7 @@ def style_transfer(number):
         소수점 방지 int
     '''
     img = cv2.resize(img, dsize=(500, int(h / w * 500)))
-    print(img.shape) # 사이즈 조정 완료 : (325, 500, 3)
+    # print(img.shape) # 사이즈 조정 완료 : (325, 500, 3)
 
     MEAN_VALUE = [103.939, 116.779, 123.680]
     '''
@@ -40,7 +40,7 @@ def style_transfer(number):
     차원변형
     '''
     blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
-    print(blob.shape) # 차원 조정 완료(컴퓨터가 인식할 수 있도록 처리) : (1, 3, 325, 500)
+    # print(blob.shape) # 차원 조정 완료(컴퓨터가 인식할 수 있도록 처리) : (1, 3, 325, 500)
 
 
     # 전처리한 결과를 input 으로 지정

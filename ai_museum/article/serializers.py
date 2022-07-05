@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from article.models import Article as ArticleModel
-from article.models import ArticleImage as ArticleImageModel
 # from article.models import Comment as CommentModel
 
 
@@ -25,10 +24,10 @@ from article.models import ArticleImage as ArticleImageModel
 
 class ArticleSerializer(serializers.ModelSerializer):
 
-    number = serializers.SerializerMethodField()  # 1. 필드 추가
+    # number = serializers.SerializerMethodField()  # 1. 필드 추가
 
-    def get_first_name(self, obj):  # 2. 메소드 추가. 이 메소드는 객체를 인자로 받고
-        return obj.full_name['number']  # 객체의 full_name 속성 값에서 'last_name' 키 값을 리턴
+    # def get_first_name(self, obj):  # 2. 메소드 추가. 이 메소드는 객체를 인자로 받고
+    #     return obj.full_name['number']  # 객체의 full_name 속성 값에서 'last_name' 키 값을 리턴
 
     class Meta:
         model = ArticleModel
