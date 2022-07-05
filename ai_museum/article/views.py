@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
 
+from user.models import User as UserModel
+
 from article.models import Article as ArticleModel
 from article.models import Article as CommentModel
 
@@ -11,12 +13,17 @@ from article.serializers import ArticleSerializer
 from article.serializers import CommentSerializer
 from django.utils import timezone
 
-# 딥러닝 관련
-# python
+# image trans pip
+from PIL import Image
+import io
+import PIL
+import sys
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+# python 딥러닝 관련
 import os
 import glob
 import shutil
-# import style_transfer
 from style_transfer.main import style_transfer
 
 # file manage(관리) 쉽게 도움 주는 라이브러리 https://docs.djangoproject.com/en/3.0/topics/files/
@@ -46,37 +53,102 @@ class ArticleView(APIView):
         return Response(serializer, status=status.HTTP_200_OK)
     
     def post(self, request):
-        # user = request.user
-        # content = request.data.get("content","")
-        # result_img = request.data.get("result_img","")
-        # exposure_start_date =request.data.get("exposure_start_date")
-        # exposure_end_date =request.data.get("exposure_end_date")
 
-        
+        # user check
+        request.data['user'] = request.user.id
+
+        # user_id = request.data['user']
+
+        content = request.data.get('content')
+        file = request.FILES.get("image")
+        number = request.data.get("number", "5")
+        article = ArticleModel.objects.all()
+        # print(file)
+        # print(number)
 
         # if len(content) <= 5:
         #     return Response({"error": "내용은 5자 이상 작성해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # article = ArticleModel(
-        #     user=user,
-        #     **request.data
-        #     title=title,
-        #     result_img=result_img,
-        #     contents=contents,
-        #     exposure_start_date=exposure_start_date,
-        #     exposure_end_date=exposure_end_date,
-        #     )
-        # article.save()
-        # return Response({"message": "성공"}, status=status.HTTP_200_OK)
+        # 이미지 업로드를 위한 임시 폴더 생성 : style_transfer/input
+        default_storage.save('./input/input_img.jpg', ContentFile(file.read()))
         
-        request.data['user'] = request.user.id
-        serializer = ArticleSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message":"글 작성 완료"})
-        else:
-            print(serializer.errors)
-            return Response({"message":f'${serializer.errors}'}, 400)
+        # 선택 모델의 목록 1 ~ 9
+        model = ['style_transfer/models/composition_vii.t7',
+                 'style_transfer/models/la_muse.t7',
+                 'style_transfer/models/starry_night.t7',
+                 'style_transfer/models/the_wave.t7',
+                 'style_transfer/models/candy.t7',
+                 'style_transfer/models/feathers.t7',
+                 'style_transfer/models/mosaic.t7',
+                 'style_transfer/models/the_scream.t7',
+                 'style_transfer/models/udnie.t7'
+                 ]
+
+        # model list select
+        model_number = model[int(number)]
+        # print(model[int(number)])
+
+        # model learning
+        style_transfer(model_number)
+
+        # clear learning afterwards upload image delete
+        shutil.rmtree('./style_transfer/input/')
+
+        # ./style_transfer/output/* get folder_name_list
+        list_of_files = glob.glob('./style_transfer/output/*')  # * means all if need specific format then *.csv
+        # print(list_of_files)
+
+        # ./style_transfer/output/* in get new file
+        # get select image root : ./style_transfer/output/20220705-110621.jpg
+        latest_file = max(list_of_files, key=os.path.getctime)
+        print(latest_file)
+
+        # # get file name : 20220705-110621.jpg
+        # result_img = os.path.basename(latest_file)
+
+        # print(request.data)
+
+        # InMemoryUploadedFile 변환
+        img_io = io.BytesIO()
+        print(img_io)
+        img = Image.open(latest_file)
+        print(img)
+        # img_ext = list(os.path.splitext(img.filename))[-1]
+        img_ext = os.path.basename(latest_file)
+        print(img_ext)
+        # percent = (basewidth / float(img.size[0]))
+        # hsize = int(float(img.size[1]) * percent)
+        # img = img.resize((basewidth, hsize),PIL.Image.ANTIALIAS)
+        img.save(img_io, format="jpeg")
+            
+        new_pic = InMemoryUploadedFile(img_io, 
+                'ImageField',
+                img_ext,
+                'jpeg',
+                sys.getsizeof(img_io), None)
+
+        # print(new_pic)
+        # ArticleModel.objects.filter(image="*").update(new_pic)
+
+        request.data['image'] = new_pic
+
+        # request.data 하드코딩 덮어쓰기
+        ArticleModel.objects.create(user=UserModel.objects.get(id=1), image=f'output/{new_pic}', content=content)
+        print('OK')
+
+        return Response({"message":"글 작성 완료"})
+
+        # serializer 사용 불가..
+        # serializer = ArticleSerializer(data=article_data)
+
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response({"message":"글 작성 완료"})
+        # else:
+        #     os.remove(latest_file)
+        #     print(serializer.errors)
+        #     return Response({"message":f'${serializer.errors}'}, 400)
+        
    # 게시글 수정
     def put(self, request, article_id):
         article = ArticleModel.objects.get(id=article_id)

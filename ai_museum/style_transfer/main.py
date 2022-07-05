@@ -6,16 +6,17 @@ from datetime import datetime  # 시간 출력을 위한 import
 content 이미지를 정의된 모델의 스타일 입혀주는 방법!!
 이미지의 경로를 바꾸거나 모델을 선택할 수 있도록 사용자에게 선택할 수 있도록 만드는 방법을 모색해볼 것
 '''
-# def style_transfer(number):
-def style_transfer():
+def style_transfer(number):
+# def style_transfer():
     # 커피머신 준비하기
     # 모델 불러오기 후 변수 정의 : cv2.dnn.readNetFromTorch('./위치/파일이름.t7')
-    net = cv2.dnn.readNetFromTorch('style_transfer/models/the_scream.t7')  # modesls 의 리스트 정의 필요
-    # net = cv2.dnn.readNetFromTorch(number)
+    # net = cv2.dnn.readNetFromTorch('style_transfer/models/the_scream.t7')  # modesls 의 리스트 정의 필요
+    net = cv2.dnn.readNetFromTorch(number)
 
     # 원두 넣을 준비하기
     # 이미지 불러오기 후 변수 정의 : cv2.imread('./경로/파일이름.jpg')
-    img = cv2.imread('static/images/img_02.jpg')
+    # img = cv2.imread('static/images/img_02.jpg')
+    img = cv2.imread('style_transfer/input/input_img.jpg')
 
     # h[높이], w[너비], c[채널] = img.shape : 이미지의 형태 
     h, w, c = img.shape
@@ -29,7 +30,7 @@ def style_transfer():
         소수점 방지 int
     '''
     img = cv2.resize(img, dsize=(500, int(h / w * 500)))
-    print(img.shape) # 사이즈 조정 완료 : (325, 500, 3)
+    # print(img.shape) # 사이즈 조정 완료 : (325, 500, 3)
 
     MEAN_VALUE = [103.939, 116.779, 123.680]
     '''
@@ -39,7 +40,7 @@ def style_transfer():
     차원변형
     '''
     blob = cv2.dnn.blobFromImage(img, mean=MEAN_VALUE)
-    print(blob.shape) # 차원 조정 완료(컴퓨터가 인식할 수 있도록 처리) : (1, 3, 325, 500)
+    # print(blob.shape) # 차원 조정 완료(컴퓨터가 인식할 수 있도록 처리) : (1, 3, 325, 500)
 
 
     # 전처리한 결과를 input 으로 지정
