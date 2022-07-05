@@ -4,7 +4,6 @@ from datetime import datetime
 
 # Create your models here.
 
-
 class Article(models.Model):
     user = models.ForeignKey(
         'user.User', verbose_name="작성자", on_delete=models.CASCADE)
@@ -21,7 +20,6 @@ class Article(models.Model):
     def __str__(self):
         return f"Article : {self.pk}"
 
-
 class Comment(models.Model):
     user = models.ForeignKey(
         'user.User', verbose_name="작성자", on_delete=models.CASCADE)
@@ -30,6 +28,6 @@ class Comment(models.Model):
     comment = models.TextField(verbose_name="댓글")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return f"{self.article}"

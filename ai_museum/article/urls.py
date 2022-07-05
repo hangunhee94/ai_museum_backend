@@ -5,4 +5,5 @@ from article import views
 urlpatterns = [
     path('<article_id>/', views.ArticleView.as_view()),
     path('<article_id>/comment/', views.CommentView.as_view()),
+    path('<article_id>/like/', views.LikeView.as_view()),
 ]

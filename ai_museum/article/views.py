@@ -48,16 +48,16 @@ class ArticleView(APIView):
 
 
 class CommentView(APIView):
-
+    # 댓글 조회
     def get(self, request, article_id):
         comment = CommentModel.objects.filter(article=article_id)
         serialized_data = CommentSerializer(
-            comment, many=True).data  # queryset
+            comment, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
-    # 댓글 작성 article id
+    # 댓글 작성
     def post(self, request, article_id):
-        request.data["user"] = request.user.id  # 로그인한 사용자
+        request.data["user"] = request.user.id
         request.data["article"] = article_id
         comment_serializer = CommentSerializer(data=request.data)
 
@@ -75,31 +75,27 @@ class CommentView(APIView):
         if comment_serializer.is_valid():
             comment_serializer.save()
             return Response(comment_serializer.data, status=status.HTTP_200_OK)
-
         return Response(comment_serializer.error, status=status.HTTP_400_BAD_REQUEST)
-    # 삭제
 
+    # 삭제
     def delete(self, request, comment_id):
         comment = CommentModel.objects.get(id=comment_id)
         comment.delete()
         return Response(status=status.HTTP_200_OK)
 
-    # 게시글 삭제
-    def delete(self, request):
-        return Response({'message': '게시물이 삭제되었습니다.'})
-
 
 class LikeView(APIView):
     def post(self, request, article_id):
         user = request.user
-        post = ArticleModel.objects.get(id=article_id)
-        likes = post.like.all()
+        article = ArticleModel.objects.get(id=article_id)
+        likes = article.likes.all()
         like_lists = []
         for like in likes:
             like_lists.append(like.id)
+
         if user.id in like_lists:
-            post.like.remove(user)
+            article.likes.remove(user)
             return Response({'message': '취소'})
         else:
-            post.like.add(user)
+            article.likes.add(user)
             return Response({'message': '좋아요'})
