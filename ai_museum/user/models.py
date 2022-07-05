@@ -29,9 +29,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     # unique=True 설정으로 중복값을 방지
-    username = models.CharField("사용자 계정", max_length=50, unique=True)
+    username = models.CharField("사용자 계정", max_length=30, unique=True)
     # 패스워드는 암호화되어 저장되기 때문에 max_length를 넉넉하게 설정
     password = models.CharField("사용자 비밀번호", max_length=200)
+
     email = models.EmailField("사용자 이메일", max_length=254)
     join_date = models.DateTimeField("가입일", auto_now_add=True)
 
