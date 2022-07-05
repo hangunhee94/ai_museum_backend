@@ -44,9 +44,9 @@ class ArticleView(APIView):
         return Response(serializer, status=status.HTTP_200_OK)
     
     def post(self, request):
-        user = request.user
-        content = request.data.get("content","")
-        result_img = request.data.get("result_img","")
+        # user = request.user
+        # content = request.data.get("content","")
+        # result_img = request.data.get("result_img","")
         # exposure_start_date =request.data.get("exposure_start_date")
         # exposure_end_date =request.data.get("exposure_end_date")
         
@@ -74,7 +74,7 @@ class ArticleView(APIView):
         else:
             print(serializer.errors)
             return Response({"message":f'${serializer.errors}'}, 400)
-
+     
 # class ArticleView(APIView):
 
 #     def get(self, request):
