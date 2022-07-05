@@ -149,9 +149,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
+# 토큰 유효 기간 지정
+from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True
+    # 액세스 토큰 유효 기간 지정
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    # 새로 고침 토큰의 유효 기간 지정
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    
+    # True 일 경유 refresh token 을 보내면 새로운 access token 과 refresh token 반환
+    'ROTATE_REFRESH_TOKENS': False,
+    # True 일 경우 기존의 refresh token 은 blacklist 추가
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 

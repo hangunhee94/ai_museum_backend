@@ -19,7 +19,6 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     exposure_start = models.DateField('노출 시작 일자', default=datetime.now)
     exposure_end = models.DateField('노출 종료 일자', default=datetime.now)
-    title = models.CharField('title', max_length=100, default="")
 
     def __str__(self):
         return f"Article : {self.pk}"

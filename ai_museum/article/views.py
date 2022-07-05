@@ -4,6 +4,10 @@ from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
 
+# 보안
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from user.models import User as UserModel
 
 from article.models import Article as ArticleModel
@@ -35,8 +39,9 @@ from django.core.files.base import ContentFile
 class ArticleView(APIView):
     # 로그인 한 사용자의 게시글 목록 return
     # permission_classes =[permissions.AllowAny]
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     # permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request):
         articles = ArticleModel.objects.all()
@@ -48,20 +53,15 @@ class ArticleView(APIView):
         #     exposure_end_date__gte = today,    
         # ).order_by("-id")
 
-        articles = ArticleModel.objects.all()
-
         return Response(serializer, status=status.HTTP_200_OK)
     
     def post(self, request):
-
-        # user check
+        # user
         request.data['user'] = request.user.id
-
-        # user_id = request.data['user']
 
         content = request.data.get('content')
         file = request.FILES.get("image")
-        number = request.data.get("number", "5")
+        number = request.data.get("number", "1")
         article = ArticleModel.objects.all()
         # print(file)
         # print(number)
@@ -72,7 +72,7 @@ class ArticleView(APIView):
         # 이미지 업로드를 위한 임시 폴더 생성 : style_transfer/input
         default_storage.save('./input/input_img.jpg', ContentFile(file.read()))
         
-        # 선택 모델의 목록 1 ~ 9
+        # 선택 모델의 목록 0 ~ 8
         model = ['style_transfer/models/composition_vii.t7',
                  'style_transfer/models/la_muse.t7',
                  'style_transfer/models/starry_night.t7',
@@ -133,7 +133,7 @@ class ArticleView(APIView):
         request.data['image'] = new_pic
 
         # request.data 하드코딩 덮어쓰기
-        ArticleModel.objects.create(user=UserModel.objects.get(id=1), image=f'output/{new_pic}', content=content)
+        ArticleModel.objects.create(user=UserModel.objects.get(id=request.user.id), image=f'output/{new_pic}', content=content)
         print('OK')
 
         return Response({"message":"글 작성 완료"})
@@ -148,6 +148,7 @@ class ArticleView(APIView):
         #     os.remove(latest_file)
         #     print(serializer.errors)
         #     return Response({"message":f'${serializer.errors}'}, 400)
+        
         
    # 게시글 수정
     def put(self, request, article_id):
@@ -164,59 +165,6 @@ class ArticleView(APIView):
     # 게시글 삭제
     def delete(self, request):
         return Response({'message': '삭제 성공!'})
-
-     
-# class ArticleView(APIView):
-
-#     def get(self, request):
-#         user = request.user.id
-#         articles = Article.objects.filter(user_id=user)
-#         articles = ArticleSerializer(articles, many=True).data
-
-#         return Response(articles, status=status.HTTP_200_OK)
-    
-    
-#     def post(self, request):
-#         content = request.data.get("content", "")
-#         file = request.data.get("file")
-#         # 사용자가 선택한 모델의 넘버
-#         number = request.data.get("number", "")
-
-#         # 이미지 업로드를 위한 임시 폴더 생성 : style_transfer/input
-#         default_storage.save('style_transfer/input/input_img.jpg', ContentFile(file.read()))
-
-#         # 선택 모델의 목록 1 ~ 9
-#         model = ['style_transfer/models/composition_vii.t7',
-#                  'style_transfer/models/la_muse.t7',
-#                  'style_transfer/models/starry_night.t7',
-#                  'style_transfer/models/the_wave.t7',
-#                  'style_transfer/models/candy.t7',
-#                  'style_transfer/models/feathers.t7',
-#                  'style_transfer/models/mosaic.t7',
-#                  'style_transfer/models/the_scream.t7',
-#                  'style_transfer/models/udnie.t7'
-#                  ]
-
-#         model_number = model[int(number)]
-#         style_transfer(model_number)
-
-#         shutil.rmtree('style_transfer/input/')
-
-#         list_of_files = glob.glob('style_transfer/output/*')  # * means all if need specific format then *.csv
-#         latest_file = max(list_of_files, key=os.path.getctime)
-
-
-#         user = request.user.id
-#         article = {'user': user, 'content': content, 'result_img': {file}}
-#         # article = {'user': user, 'title': title, 'img_url': latest_file}
-#         article_serializer = ArticleSerializer(data=article)
-#         if article_serializer.is_valid():
-#             article_serializer.save()
-#             return Response(status=status.HTTP_200_OK)
-
-#         else:
-#             os.remove(latest_file)
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # '''

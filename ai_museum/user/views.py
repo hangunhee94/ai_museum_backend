@@ -11,7 +11,7 @@ from user.jwt_claim_serializer import SpartaTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserView(APIView):
-    # permission_classes = [permissions.AllowAny]       # 누구나 view 접근 가능
+    permission_classes = [permissions.AllowAny]       # 누구나 view 접근 가능
     # # permission_classes = [permissions.IsAuthenticated] # 로그인된 사용자만 view 접근 가능
     # # permission_classes = [permissions.IsAdminUser]     # admin 유저만 view 접근 가능
     def get(self, request):
@@ -38,9 +38,10 @@ class UserView(APIView):
     def delete(self, request):
         return Response({"message": "delete method!!"})
 
-    # 로그아웃
-    # def logout(request):
-        # return Response({"message": "logout success!"})
+    #@로그아웃
+    def delete(self, request):
+        logout(request)
+        return Response({"message": "logout success!"})
 
 
 # 토큰 할당
