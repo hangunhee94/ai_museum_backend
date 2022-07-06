@@ -7,11 +7,12 @@ from rest_framework.response import Response
 # 보안
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+import article
 
 from user.models import User as UserModel
 
 from article.models import Article as ArticleModel
-from article.models import Article as CommentModel
+from article.models import Comment as CommentModel
 
 from article.serializers import ArticleSerializer
 from article.serializers import CommentSerializer
@@ -34,6 +35,16 @@ from style_transfer.main import style_transfer
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
+# Create your views here.
+class ArticleDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, article_id):
+        articles = ArticleModel.objects.filter(id=article_id)
+        serializer = ArticleSerializer(articles, many=True).data
+        
+        return Response(serializer, status=status.HTTP_200_OK)
+
 
 # Create your views here.
 class ArticleView(APIView):
@@ -45,6 +56,7 @@ class ArticleView(APIView):
 
     def get(self, request):
         articles = ArticleModel.objects.all()
+        print(articles)
         today = timezone.now()
         serializer = ArticleSerializer(articles, many=True).data
 
@@ -61,7 +73,7 @@ class ArticleView(APIView):
 
         content = request.data.get('content')
         file = request.FILES.get("image")
-        number = request.data.get("number", "1")
+        number = request.data.get("number")
         article = ArticleModel.objects.all()
         # print(file)
         # print(number)
@@ -167,71 +179,13 @@ class ArticleView(APIView):
         return Response({'message': '삭제 성공!'})
 
 
-# '''
-# 수정 및 삭제 로직 : 출처 내배캠 2기 5조
-
-#     def put(self, request, article_id):
-#         try:
-#             article = Article.objects.get(id=article_id)
-#         except Article.DoesNotExist:
-#             return Response({"error": "존재하지 않는 게시물입니다."},
-#                             status=status.HTTP_400_BAD_REQUEST)
-
-#         # article_serializer = ArticleSerializer(article, data=request.data, partial=True)
-#         # article_serializer.is_valid(raise_exception=True)
-#         # article_serializer.save()
-
-#         return Response({"message": "put method"}, status=status.HTTP_200_OK)
-
-#     def delete(self, request, article_id):
-#         user = request.user.id
-#         article = Article.objects.filter(id=article_id)
-#         print(user)
-#         print(article[0].user_id)
-#         if user == article[0].user_id:
-#             article.delete()
-#             os.remove(article[0].img_url)
-#             return Response({"message": "게시물이 삭제되었습니다."}, status=status.HTTP_200_OK)
-
-#         return Response({"message": "실패."}, status=status.HTTP_400_BAD_REQUEST)
-# '''
-
-
-
-# '''
-# 마이페이지 포스팅 조회
-# '''
-
-# class ArticleMyGalleryView(APIView):
-
-#     def get(self, request):
-#         user = request.user.id
-#         articles = Article.objects.filter(user_id=user)
-#         articles = ArticleSerializer(articles, many=True).data
-
-#         return Response(articles, status=status.HTTP_200_OK)
-
-#     def delete(self, request, article_id):
-#         user = request.user.id
-#         article = Article.objects.filter(id=article_id)
-#         print(user)
-#         print(article[0].user_id)
-#         if user == article[0].user_id:
-#             article.delete()
-#             os.remove(article[0].img_url)
-#             return Response({"message": "게시물이 삭제되었습니다."}, status=status.HTTP_200_OK)
-
-#         else:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    
-
 class CommentView(APIView):
     # 댓글 조회
     def get(self, request, article_id):
         comment = CommentModel.objects.filter(article=article_id)
-        serialized_data = CommentSerializer(
-            comment, many=True).data
+        print(comment)
+        # comment = CommentModel.objects.all()
+        serialized_data = CommentSerializer(comment, many=True).data
         return Response(serialized_data, status=status.HTTP_200_OK)
 
     # 댓글 작성

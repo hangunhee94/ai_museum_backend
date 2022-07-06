@@ -4,12 +4,25 @@ from article.models import Article as ArticleModel
 from article.models import Comment as CommentModel
 
 
+class CommentSerializer(serializers.ModelSerializer):
+
+    # username = serializers.SerializerMethodField(read_only=True)
+
+    # def get_username(self,obj):
+    #     return obj.user.username
+
+    class Meta:
+        model = CommentModel
+        fields = '__all__'
+        # fields = ['id','comment','article','user']
+
+
 class ArticleSerializer(serializers.ModelSerializer):
 
-    # comments = CommentSerializer(many=True, source="comment_set")
+    comments = CommentSerializer(many=True, source="comment_set")
     
-    def validate(self, data):
-        return data
+    # def validate(self, data):
+    #     return data
 
     # def create(self, validated_data):
     #     article = ArticleModel(**validated_data)
@@ -29,13 +42,10 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = CommentModel
 
 
-class LikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = 'likes'
-        model = ArticleModel
+
+# class LikeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         fields = 'likes'
+#         model = ArticleModel
