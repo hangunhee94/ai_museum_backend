@@ -11,7 +11,7 @@
 
 ### 🧙 맴버구성
 - Backend - https://github.com/sparta-camp-helpme/ai_museum_backend/
-  - frontend 개발 별도 - https://github.com/sparta-camp-helpme/ai_museum_frontend
+- frontend 개발 별도 - https://github.com/sparta-camp-helpme/ai_museum_frontend
   - 김성호 : 상세페이지
   - 백선영 : 로그인/회원가입 필수 정보
   - 이동현 : 개인페이지 / 딥러닝
