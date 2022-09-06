@@ -36,30 +36,25 @@
 
 ### 3.1. 와이어프레임   
 <p align='center'>
-  <p>1차 와이어 프레임</p>
+  <p>와이어 프레임</p>
   <img src="./README/images/wireframe.png" width="600px" />
 </p>
 
 
 ### 3.2. ERD    
 <p align='center'>
-  <p>1차 DB</p>
+  <p>DB</p>
   <img src="./README/images/ERD.png" width="600px" />
 </p>
 
-<br>
 
-## 4. 핵심 트러블 슈팅
-### 4.1. 
+### 3.3. API  
 
-</br>
-
-## 5. 그 외 트러블 슈팅    
-### 5.1. 
+![Ai_Museum_API](https://user-images.githubusercontent.com/104430302/188551523-e2363b32-ae4c-405c-a63a-cabb9f39aaf6.png)
 
 </br>
 
-## 6. 회고 / 느낀점
+## 4. 회고 / 느낀점
 >프로젝트 개발 회고 글: https://hee94.tistory.com/57 
 
 ---
